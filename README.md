@@ -1,19 +1,20 @@
-# Claude Cost
+# Claude Cost CLI
 
 [![PyPI version](https://badge.fury.io/py/claude-cost.svg)](https://badge.fury.io/py/claude-cost)
 [![Python Support](https://img.shields.io/pypi/pyversions/claude-cost.svg)](https://pypi.org/project/claude-cost/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Downloads](https://pepy.tech/badge/claude-cost)](https://pepy.tech/project/claude-cost)
 
-A comprehensive Claude usage analysis and optimization tool that calculates costs, provides optimization insights, and predicts usage limits. Analyze your Claude conversations with advanced metrics, cost optimization insights, and probabilistic usage predictions.
+🚀 **Command-line tool** for analyzing your AI usage costs, optimizing spending, and predicting usage limits. Get comprehensive insights into your AI conversation patterns with advanced metrics and probabilistic predictions.
 
-**Key Benefits:**
-- 📊 **Zero external dependencies** for core functionality
+**Why Use This CLI Tool:**
+- 📊 **Zero external dependencies** - works out of the box
 - 🔍 **Comprehensive cost analysis** with cache optimization insights  
 - 🔮 **Advanced prediction algorithms** with backtesting validation
 - ⚡ **Real-time risk assessment** for usage limit management
 - 🎯 **Actionable optimization recommendations**
 - 🔒 **Privacy-first design** - only processes usage metadata, never message content
+- ⚡ **Fast CLI interface** - get insights in seconds
 
 ## Features
 
@@ -41,15 +42,28 @@ A comprehensive Claude usage analysis and optimization tool that calculates cost
 - **Dynamic Risk Scoring** - Context-aware risk assessment (0-100 scale)
 - **Actionable Insights** - Session-specific recommendations and warnings
 
-## Installation
+## Quick Start
 
-### From PyPI (Recommended)
+### Install via pip
 
 ```bash
 pip install claude-cost
 ```
 
-### From Source
+### Run analysis commands
+
+```bash
+# Get comprehensive cost analysis and optimization insights
+claude-cost metrics
+
+# Predict usage limits with backtesting validation  
+claude-cost predict
+
+# Advanced probabilistic predictions with context awareness
+claude-cost advanced
+```
+
+### Installation from source
 
 ```bash
 git clone https://github.com/hassanazam/claude-cost.git
@@ -57,280 +71,187 @@ cd claude-cost
 pip install -e .
 ```
 
-## Usage
+## CLI Commands
 
+### 📊 Cost Analysis
 ```bash
-# Cost optimization and efficiency analysis
 claude-cost metrics
+```
+Get detailed cost breakdowns, cache efficiency analysis, and optimization recommendations.
 
-# Legacy usage limit predictions with backtesting
+### 🔮 Usage Predictions 
+```bash
 claude-cost predict
+```
+Predict usage limits with backtesting validation (66.7% accuracy).
 
-# Advanced probabilistic predictions with context awareness (NEW!)
+### 🔬 Advanced Predictions
+```bash
 claude-cost advanced
 ```
+Context-aware predictions with confidence intervals and behavioral analysis.
 
-### Python API
+### Example Output
+```bash
+$ claude-cost metrics
+📊 CALCULATING COMPREHENSIVE METRICS...
+
+💰 TOTAL COST ANALYSIS
+   • Total Spend: $45.67
+   • Cache Savings: $12.34 (21.3%)
+   • Daily Average: $3.24
+
+🎯 OPTIMIZATION INSIGHTS
+   • Cache Hit Rate: 67.8% (Excellent)
+   • Cost per 1K tokens: $0.045
+   • Most efficient model: Sonnet 4
+
+⏰ TIMING ANALYSIS
+   • Peak usage: 14:00-16:00 (34% of spend)
+   • Best efficiency: 09:00-11:00
+```
+
+## Python API (Optional)
+
+While primarily a CLI tool, you can also use the Python API for custom integrations:
 
 ```python
 from claude_cost import (
     calculate_comprehensive_metrics, 
     find_project_files,
     print_metrics_only,
-    print_predictions_only,
-    backtest_predictions
+    print_predictions_only
 )
 
-# Find Claude project files
+# Find project files and run analysis
 files = find_project_files()
-
-# Calculate comprehensive metrics
 metrics, analysis_data, *additional_data = calculate_comprehensive_metrics(files)
 
-# Display cost optimization analysis
+# Display results
 print_metrics_only(metrics, analysis_data, *additional_data)
-
-# Display usage limit predictions
 print_predictions_only(metrics, analysis_data, *additional_data)
-
-# Run prediction backtesting
-backtest_predictions(files)
 ```
 
-### Advanced Usage
+## Use Cases & Examples
 
-```python
-from claude_cost.models import PRICING, ComprehensiveMetrics
-from claude_cost.advanced_predictions import run_advanced_predictions
+### 📊 Daily Cost Monitoring
+```bash
+# Quick daily check
+claude-cost metrics | head -20
 
-# Access pricing data
-sonnet_pricing = PRICING['claude-sonnet-4-20250514']
-print(f"Input: ${sonnet_pricing['input']}/MTok, Output: ${sonnet_pricing['output']}/MTok")
+# Focus on recent activity
+claude-cost metrics | grep -A 5 "LAST 5 HOURS"
 
-# Run advanced probabilistic predictions
-run_advanced_predictions(files)
-
-# Work with metrics objects
-if isinstance(metrics, ComprehensiveMetrics):
-    print(f"Total cost: ${metrics.total_cost:.2f}")
-    print(f"Cache savings: ${metrics.cache_savings:.2f}")
+# Check cache efficiency
+claude-cost metrics | grep "Cache Hit Rate"
 ```
 
-## Sample Usage Scenarios
+### 🔍 Cost Optimization Workflow
+```bash
+# Step 1: Get comprehensive overview
+claude-cost metrics
 
-### 📊 Basic Cost Analysis
-```python
-import claude_cost
+# Step 2: Check usage patterns and risks
+claude-cost predict
 
-# Quick cost analysis
-files = claude_cost.find_project_files()
-metrics, analysis_data, *_ = claude_cost.calculate_comprehensive_metrics(files)
+# Step 3: Get advanced insights for planning
+claude-cost advanced
 
-print(f"💰 Total spend: ${metrics.total_cost:.2f}")
-print(f"💾 Cache savings: ${metrics.cache_savings:.2f}")
-print(f"📊 Total tokens: {metrics.total_tokens:,}")
-print(f"⚡ Tokens per dollar: {metrics.tokens_per_dollar:,.0f}")
+# Automate daily checks
+echo "claude-cost metrics | head -10" >> ~/.bashrc
 ```
 
-### 🔍 Detailed Analytics Dashboard
-```python
-import claude_cost
+### 🔮 Proactive Usage Management
+```bash
+# Check current risk level
+claude-cost predict | grep "Risk Score"
 
-# Complete analysis workflow
-files = claude_cost.find_project_files()
-print(f"Found {len(files)} Claude project files")
+# Get detailed predictions with context
+claude-cost advanced
 
-# Generate comprehensive metrics
-result = claude_cost.calculate_comprehensive_metrics(files)
-metrics, analysis_data = result[0], result[1]
-
-# Display full metrics analysis
-claude_cost.print_metrics_only(metrics, analysis_data)
-
-# Key insights
-print(f"\n📈 KEY INSIGHTS:")
-print(f"Cache hit rate: {metrics.cache_hit_rate:.1%}")
-print(f"Average session cost: ${metrics.cost_per_session:.2f}")
-print(f"Daily spend: ${metrics.per_day_spend_with_cache:.2f}")
+# Set up alerts (example with cron)
+echo "0 */3 * * * claude-cost predict | grep 'HIGH RISK' && notify-send 'Usage Alert'" | crontab -
 ```
 
-### 🔮 Usage Limit Predictions
-```python
-import claude_cost
+### 🔬 CI/CD Integration
+```bash
+# Add to your deployment pipeline
+#!/bin/bash
+echo "Checking AI usage costs..."
+claude-cost metrics > usage_report.txt
 
-# Get data for predictions
-files = claude_cost.find_project_files()
-result = claude_cost.calculate_comprehensive_metrics(files)
-metrics, analysis_data = result[0], result[1]
-
-# Legacy prediction system
-claude_cost.print_predictions_only(metrics, analysis_data, *result[2:])
-
-# Advanced probabilistic predictions
-claude_cost.print_advanced_predictions(analysis_data, result[2])
+# Alert if daily costs exceed threshold
+DAILY_COST=$(claude-cost metrics | grep "Daily Average" | grep -o '\$[0-9.]\+')
+if (( $(echo "$DAILY_COST > 50" | bc -l) )); then
+    echo "⚠️ High daily costs detected: $DAILY_COST"
+    exit 1
+fi
 ```
 
-### 🔬 Advanced Programmatic Usage
-```python
-from claude_cost import (
-    DataProcessor, MetricsCalculator, AdvancedPredictionEngine,
-    find_project_files, get_recent_messages_for_advanced_prediction
-)
+### 💡 Cost Optimization Tips
+```bash
+# Get optimization recommendations
+claude-cost metrics | grep -A 10 "OPTIMIZATION"
 
-# Manual data processing for custom analysis
-files = find_project_files()
-processor = DataProcessor()
-processor.process_files(files)
+# Compare model efficiency
+claude-cost metrics | grep "tokens per dollar"
 
-# Custom metrics calculation
-calculator = MetricsCalculator(processor)
-metrics = calculator.calculate_metrics()
+# Find your peak usage times
+claude-cost metrics | grep -A 5 "HOURLY PATTERNS"
 
-# Advanced predictions with custom parameters
-recent_messages = get_recent_messages_for_advanced_prediction(
-    processor.all_messages, hours=3
-)
-
-engine = AdvancedPredictionEngine()
-predictions = engine.generate_predictions(
-    recent_messages, 
-    historical_patterns=[],
-    horizons=[15, 30, 60, 120]  # Custom time horizons
-)
-
-for horizon, pred in predictions.items():
-    print(f"{horizon}min: {pred.mean_minutes:.0f}min (risk: {pred.risk_score:.0f}%)")
+# Check cache performance
+claude-cost metrics | grep "Cache"
 ```
 
-### 💡 Cost Optimization Analysis
-```python
-import claude_cost
+### 📊 Monitoring & Automation
+```bash
+# Create daily usage report
+#!/bin/bash
+DATE=$(date +%Y-%m-%d)
+echo "=== Usage Report for $DATE ===" > report_$DATE.txt
+claude-cost metrics >> report_$DATE.txt
+claude-cost predict >> report_$DATE.txt
 
-files = claude_cost.find_project_files()
-metrics, analysis_data, *_ = claude_cost.calculate_comprehensive_metrics(files)
+# Weekly cost summary
+claude-cost metrics | grep "Daily Average" | tail -7
 
-# Analyze cost efficiency
-print("🎯 OPTIMIZATION OPPORTUNITIES:")
-
-# Cache analysis
-if metrics.cache_hit_rate < 0.5:
-    potential_savings = metrics.total_cost * (0.5 - metrics.cache_hit_rate) * 0.75
-    print(f"💾 Improve cache usage: +${potential_savings:.2f} potential savings")
-
-# Model efficiency
-model_usage = analysis_data['model_usage']
-for model, data in model_usage.items():
-    if isinstance(data, dict):
-        efficiency = data['tokens'] / data['cost'] if data['cost'] > 0 else 0
-        print(f"🤖 {model}: {efficiency:,.0f} tokens/$")
-
-# Recent activity analysis
-if metrics.last_5h_cost > 0:
-    recent_efficiency = metrics.last_5h_cost / metrics.last_5h_tokens
-    overall_efficiency = metrics.cost_per_token
-    efficiency_ratio = recent_efficiency / overall_efficiency if overall_efficiency > 0 else 1
-    
-    if efficiency_ratio > 1.2:
-        print(f"⚠️  Recent usage 20% less efficient than average")
-    elif efficiency_ratio < 0.8:
-        print(f"✅ Recent usage 20% more efficient than average")
+# Set up usage alerts
+alias usage-check='claude-cost predict | head -5'
+alias cost-check='claude-cost metrics | head -10'
 ```
 
-### 📊 Custom Metrics Extraction
-```python
-from claude_cost import DataProcessor, find_project_files
-from datetime import datetime, timedelta
+### 🧪 Prediction Accuracy Testing
+```bash
+# Test prediction accuracy against historical data
+claude-cost predict | grep "Accuracy"
 
-# Process data manually for custom analysis
-processor = DataProcessor()
-files = find_project_files()
-processor.process_files(files)
+# Compare prediction algorithms
+claude-cost predict  # Legacy algorithm
+claude-cost advanced # Advanced algorithm
 
-# Extract custom insights
-print("📈 CUSTOM ANALYSIS:")
-
-# Most expensive sessions
-expensive_sessions = [
-    s for s in processor.all_sessions 
-    if s['total_cost'] > 5.0
-]
-print(f"💸 Expensive sessions (>$5): {len(expensive_sessions)}")
-
-# Peak usage hours
-hourly_costs = {}
-for msg in processor.all_messages:
-    if msg['timestamp']:
-        hour = msg['timestamp'].hour
-        hourly_costs[hour] = hourly_costs.get(hour, 0) + msg['cost']
-
-peak_hour = max(hourly_costs.keys(), key=lambda h: hourly_costs[h])
-print(f"⏰ Peak cost hour: {peak_hour:02d}:00 (${hourly_costs[peak_hour]:.2f})")
-
-# Model distribution
-model_counts = {}
-for msg in processor.all_messages:
-    model = msg['model']
-    model_counts[model] = model_counts.get(model, 0) + 1
-
-print(f"🤖 Model usage:")
-for model, count in sorted(model_counts.items(), key=lambda x: x[1], reverse=True):
-    print(f"   {model}: {count} messages")
+# Validate prediction reliability
+claude-cost metrics | grep "Risk Score"
 ```
 
-### 🧪 Backtesting & Validation
-```python
-import claude_cost
+### 📱 Monitoring Dashboard
+```bash
+# Create a simple monitoring script
+#!/bin/bash
+# save as ~/bin/ai-dashboard
 
-# Run prediction accuracy validation
-files = claude_cost.find_project_files()
-result = claude_cost.calculate_comprehensive_metrics(files)
-analysis_data = result[1]
+echo "🤖 AI Usage Dashboard - $(date)"
+echo "================================"
+claude-cost metrics | head -15
+echo ""
+echo "🔮 Current Predictions:"
+claude-cost predict | head -8
+echo ""
+echo "📊 Advanced Analysis:"
+claude-cost advanced | head -10
 
-# Validate prediction algorithms
-claude_cost.backtest_predictions(
-    analysis_data['all_messages'], 
-    analysis_data['limit_hits']
-)
-```
-
-### 📱 Integration Example
-```python
-# Example: Integration with monitoring system
-import claude_cost
-import json
-
-def check_usage_status():
-    """Check current Claude usage status for monitoring."""
-    try:
-        files = claude_cost.find_project_files()
-        if not files:
-            return {"status": "no_data", "cost": 0}
-        
-        result = claude_cost.calculate_comprehensive_metrics(files)
-        metrics = result[0]
-        
-        # Risk assessment
-        risk_level = "low"
-        if metrics.last_5h_cost > 10:  # $10 in last 5 hours
-            risk_level = "high"
-        elif metrics.last_5h_cost > 5:   # $5 in last 5 hours
-            risk_level = "medium"
-        
-        return {
-            "status": "active",
-            "total_cost": round(metrics.total_cost, 2),
-            "last_5h_cost": round(metrics.last_5h_cost, 2),
-            "cache_efficiency": round(metrics.cache_hit_rate * 100, 1),
-            "risk_level": risk_level,
-            "daily_spend": round(metrics.per_day_spend_with_cache, 2)
-        }
-    
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-# Usage monitoring
-status = check_usage_status()
-print(json.dumps(status, indent=2))
+# Make executable and run
+chmod +x ~/bin/ai-dashboard
+./ai-dashboard
 ```
 
 ## Requirements

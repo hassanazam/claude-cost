@@ -8,7 +8,7 @@ version = "1.0.0"
 authors = [
     {name = "Hassan", email = "noreply@claude-cost.dev"},
 ]
-description = "Privacy-first Claude usage analysis and cost optimization tool"
+description = "Command-line tool for AI usage analysis, cost optimization, and usage limit predictions"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.7"
