@@ -112,7 +112,7 @@ jobs:
       run: python -m build
     
     - name: Sign packages with Sigstore
-      uses: sigstore/gh-action-sigstore-python@v2.1.1
+      uses: sigstore/gh-action-sigstore-python@v3.0.0
       with:
         inputs: ./dist/*
       continue-on-error: true  # Don't fail if signing unavailable
