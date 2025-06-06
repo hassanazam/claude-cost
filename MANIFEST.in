@@ -1,0 +1,30 @@
+# Include important package files
+include README.md
+include LICENSE
+include CLAUDE.md
+include METRICS_VERIFICATION.md
+include pyproject.toml
+include requirements.txt
+include setup.sh
+
+# Include source code
+recursive-include src *.py
+
+# Exclude development and build files
+exclude .gitignore
+exclude claude-cost
+exclude claude_comprehensive_metrics.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.so
+recursive-exclude * .DS_Store
+recursive-exclude .git *
+recursive-exclude .github *
+recursive-exclude * .pytest_cache
+recursive-exclude * *.egg-info
+
+# Include GitHub workflows for reference
+recursive-include .github/workflows *.yml
+
+# Include docs if any
+recursive-include docs *.md *.rst *.txt

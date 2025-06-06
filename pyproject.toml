@@ -6,15 +6,16 @@ build-backend = "hatchling.build"
 name = "claude-cost"
 version = "1.0.0"
 authors = [
-    {name = "Claude Cost Development Team", email = "noreply@example.com"},
+    {name = "Hassan", email = "noreply@claude-cost.dev"},
 ]
-description = "Comprehensive Claude usage analysis and optimization tool"
+description = "Privacy-first Claude usage analysis and cost optimization tool"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -27,8 +28,25 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Monitoring",
     "Topic :: Utilities",
+    "Topic :: Office/Business :: Financial",
+    "Environment :: Console",
+    "Natural Language :: English",
 ]
-keywords = ["claude", "ai", "cost", "analysis", "optimization", "usage", "metrics"]
+keywords = [
+    "claude", 
+    "ai", 
+    "cost", 
+    "analysis", 
+    "optimization", 
+    "usage", 
+    "metrics", 
+    "privacy", 
+    "cli", 
+    "anthropic",
+    "tokens",
+    "cache",
+    "prediction"
+]
 dependencies = []
 
 [project.optional-dependencies]
@@ -41,10 +59,12 @@ viz = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-username/claude-cost"
-Documentation = "https://github.com/your-username/claude-cost#readme"
-Repository = "https://github.com/your-username/claude-cost.git"
-"Bug Tracker" = "https://github.com/your-username/claude-cost/issues"
+Homepage = "https://github.com/hassanazam/claude-cost"
+Documentation = "https://github.com/hassanazam/claude-cost#readme"
+Repository = "https://github.com/hassanazam/claude-cost.git"
+"Bug Tracker" = "https://github.com/hassanazam/claude-cost/issues"
+"Source Code" = "https://github.com/hassanazam/claude-cost"
+"Download" = "https://pypi.org/project/claude-cost/"
 
 [project.scripts]
 claude-cost = "claude_cost.cli:main"

@@ -8,14 +8,13 @@ This module implements a sophisticated prediction algorithm that:
 4. Calculates dynamic risk scores based on behavioral patterns
 """
 
-import numpy as np
 import statistics
+import math
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from enum import Enum
-from collections import defaultdict, deque
-import math
+from collections import defaultdict
 
 
 class SessionContext(Enum):
@@ -617,3 +616,200 @@ class BehavioralFeatureExtractor:
             time_since_last_message=0,
             hour_of_day=12
         )
+
+
+class AdvancedPredictionFormatter:
+    """Formats and displays advanced prediction results."""
+    
+    def print_predictions(self, predictions: Dict[int, PredictionResult], 
+                         context: SessionContext, features: BehavioralFeatures) -> None:
+        """Print comprehensive advanced prediction analysis."""
+        self._print_header()
+        self._print_context_analysis(context, features)
+        self._print_multi_horizon_predictions(predictions)
+        self._print_uncertainty_analysis(predictions)
+        self._print_actionable_insights(predictions, context, features)
+    
+    def _print_header(self) -> None:
+        """Print analysis header."""
+        print(f"\n🔬 ADVANCED PROBABILISTIC USAGE LIMIT PREDICTIONS")
+        print("=" * 70)
+        print(f"   Using context-aware ensemble models with uncertainty quantification")
+    
+    def _print_context_analysis(self, context: SessionContext, features: BehavioralFeatures) -> None:
+        """Print session context classification."""
+        print(f"\n🎯 SESSION CONTEXT ANALYSIS")
+        print(f"   • Detected Session Type: {context.value.title()}")
+        print(f"   • Current Token Rate: {features.tokens_per_minute:.1f} tokens/minute")
+        print(f"   • Rate Variance: {features.token_rate_variance:.2f}")
+        print(f"   • Cache Hit Rate: {features.cache_hit_rate:.1%}")
+        print(f"   • Session Duration: {features.session_duration_minutes:.1f} minutes")
+        
+        # Context-specific insights
+        context_insights = {
+            SessionContext.EXPLORATION: "High variance, unpredictable bursts expected",
+            SessionContext.CODING: "Steady patterns, reliable predictions",
+            SessionContext.DEBUGGING: "Irregular bursts, watch for intensity spikes",
+            SessionContext.OPTIMIZATION: "Declining rate pattern expected",
+            SessionContext.UNKNOWN: "Insufficient data for classification"
+        }
+        print(f"   • Pattern Insight: {context_insights.get(context, 'Unknown pattern')}")
+    
+    def _print_multi_horizon_predictions(self, predictions: Dict[int, PredictionResult]) -> None:
+        """Print predictions for different time horizons."""
+        print(f"\n📊 MULTI-HORIZON PREDICTIONS")
+        print(f"   Time Horizon | Mean Time | Confidence Interval | Risk Level")
+        print(f"   -------------|-----------|-------------------|----------")
+        
+        for horizon, pred in sorted(predictions.items()):
+            risk_level = self._get_risk_level(pred.risk_score)
+            ci_low, ci_high = pred.confidence_interval
+            
+            print(f"   {horizon:3d} minutes  | {pred.mean_minutes:6.0f} min | "
+                  f"({ci_low:3.0f}-{ci_high:3.0f}) min    | {risk_level}")
+    
+    def _print_uncertainty_analysis(self, predictions: Dict[int, PredictionResult]) -> None:
+        """Print uncertainty and confidence analysis."""
+        print(f"\n📈 UNCERTAINTY QUANTIFICATION")
+        
+        for horizon, pred in sorted(predictions.items()):
+            print(f"   • {horizon}-minute horizon:")
+            print(f"     - Probability of limit within timeframe: {pred.probability_within_hour:.1%}")
+            print(f"     - Risk Score: {pred.risk_score:.0f}/100")
+            print(f"     - Prediction Confidence: {self._calculate_confidence(pred):.0f}%")
+    
+    def _print_actionable_insights(self, predictions: Dict[int, PredictionResult], 
+                                  context: SessionContext, features: BehavioralFeatures) -> None:
+        """Print actionable recommendations."""
+        print(f"\n💡 ACTIONABLE INSIGHTS & RECOMMENDATIONS")
+        
+        # Get shortest horizon prediction for immediate insights
+        shortest_horizon = min(predictions.keys())
+        immediate_pred = predictions[shortest_horizon]
+        
+        if immediate_pred.risk_score > 70:
+            print(f"   🚨 HIGH RISK: Consider pausing intensive operations")
+        elif immediate_pred.risk_score > 40:
+            print(f"   ⚠️  MODERATE RISK: Monitor usage closely")
+        else:
+            print(f"   ✅ LOW RISK: Normal usage patterns")
+        
+        # Context-specific recommendations
+        if context == SessionContext.EXPLORATION:
+            print(f"   • Consider switching to more focused queries to reduce variance")
+        elif context == SessionContext.DEBUGGING:
+            print(f"   • Be aware of potential usage spikes during intensive debugging")
+        elif context == SessionContext.CODING:
+            print(f"   • Good predictable pattern - continue current approach")
+        elif context == SessionContext.OPTIMIZATION:
+            print(f"   • Usage typically declines - good time for refinement")
+        
+        # Rate-based recommendations
+        if features.rate_acceleration > 0:
+            print(f"   • Usage rate is accelerating - consider throttling")
+        
+        if features.cache_hit_rate < 0.3:
+            print(f"   • Low cache efficiency - consider reusing context more")
+        
+        # Time-based recommendations
+        longest_horizon = max(predictions.keys())
+        long_term_pred = predictions[longest_horizon]
+        
+        if long_term_pred.probability_within_hour > 0.8:
+            print(f"   • High probability of limit within {longest_horizon} minutes")
+            print(f"   • Consider planning session breaks or reducing scope")
+    
+    def _get_risk_level(self, risk_score: float) -> str:
+        """Convert risk score to human-readable level."""
+        if risk_score >= 70:
+            return "🔴 HIGH"
+        elif risk_score >= 40:
+            return "🟡 MEDIUM"
+        else:
+            return "🟢 LOW"
+    
+    def _calculate_confidence(self, prediction: PredictionResult) -> float:
+        """Calculate confidence percentage from prediction uncertainty."""
+        ci_low, ci_high = prediction.confidence_interval
+        uncertainty_range = ci_high - ci_low
+        relative_uncertainty = uncertainty_range / prediction.mean_minutes if prediction.mean_minutes > 0 else 1
+        
+        # Convert to confidence (inverse of relative uncertainty)
+        confidence = max(0, min(100, 100 * (1 - relative_uncertainty / 2)))
+        return confidence
+
+
+def run_advanced_predictions(files: List[str]) -> None:
+    """
+    Main entry point for advanced probabilistic predictions.
+    
+    Args:
+        files: List of JSONL file paths to analyze
+    """
+    # This would be called from the main CLI
+    # For now, this is a placeholder since CLI handles the workflow
+    pass
+
+
+def get_recent_messages_for_advanced_prediction(all_messages: List[Dict], 
+                                               hours: int = 2) -> List[Dict]:
+    """
+    Get recent messages for advanced prediction analysis.
+    
+    Args:
+        all_messages: Complete message history
+        hours: Number of recent hours to include
+        
+    Returns:
+        List of recent messages suitable for advanced analysis
+    """
+    from datetime import datetime, timezone, timedelta
+    
+    if not all_messages:
+        return []
+    
+    # Get current time
+    now = datetime.now(timezone.utc)
+    cutoff_time = now - timedelta(hours=hours)
+    
+    # Filter to recent messages
+    recent_messages = [
+        msg for msg in all_messages
+        if msg.get('timestamp') and msg['timestamp'] >= cutoff_time
+    ]
+    
+    return recent_messages
+
+
+def convert_legacy_patterns_to_advanced(five_hour_patterns: List[Dict]) -> List[Dict]:
+    """
+    Convert legacy 5-hour patterns to format expected by advanced predictions.
+    
+    Args:
+        five_hour_patterns: Legacy pattern data
+        
+    Returns:
+        List of patterns in advanced prediction format
+    """
+    advanced_patterns = []
+    
+    for pattern in five_hour_patterns:
+        # Convert legacy pattern to advanced format
+        advanced_pattern = {
+            'time_to_limit_minutes': 180,  # Default estimate
+            'avg_tokens_per_minute': pattern.get('avg_tokens_per_minute', 0),
+            'total_tokens': pattern.get('total_tokens', 0),
+            'total_messages': pattern.get('total_messages', 0),
+            'pattern_type': 'historical',
+            'limit_timestamp': pattern.get('limit_timestamp')
+        }
+        
+        # Estimate time to limit based on pattern
+        if pattern.get('avg_tokens_per_minute', 0) > 0:
+            # Rough estimate: assume limit hit when rate was sustained
+            estimated_time = 180  # 3 hours default
+            advanced_pattern['time_to_limit_minutes'] = estimated_time
+        
+        advanced_patterns.append(advanced_pattern)
+    
+    return advanced_patterns

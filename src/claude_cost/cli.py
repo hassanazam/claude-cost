@@ -33,10 +33,13 @@ Examples:
     
     if args.command == 'metrics':
         print("📊 CLAUDE COMPREHENSIVE METRICS CALCULATOR")
+        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     elif args.command == 'predict':
         print("🔮 CLAUDE USAGE LIMIT PREDICTOR (Legacy)")
+        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     else:
         print("🔬 CLAUDE ADVANCED PROBABILISTIC PREDICTOR")
+        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     
     # Find and analyze files
     files = find_project_files()
