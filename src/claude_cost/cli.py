@@ -29,7 +29,8 @@ def main():
     if hasattr(sys.stdout, 'reconfigure'):
         try:
             sys.stdout.reconfigure(encoding='utf-8')
-        except:
+        except (AttributeError, OSError):  # nosec B110
+            # Ignore encoding errors - fallback handling in safe_print()
             pass
     
     parser = argparse.ArgumentParser(
