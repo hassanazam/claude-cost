@@ -1133,14 +1133,16 @@ def backtest_predictions(all_messages, limit_hits):
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Comprehensive Claude Cost & Optimization Metrics')
-    parser.add_argument('command', nargs='?', default='metrics', choices=['metrics', 'predict'], 
-                       help='Command to run: metrics (cost analysis) or predict (limit predictions)')
+    parser.add_argument('command', nargs='?', default='metrics', choices=['metrics', 'predict', 'advanced'], 
+                       help='Command to run: metrics (cost analysis), predict (legacy predictions), or advanced (probabilistic predictions)')
     args = parser.parse_args()
     
     if args.command == 'metrics':
         print("📊 CLAUDE COMPREHENSIVE METRICS CALCULATOR")
+    elif args.command == 'predict':
+        print("🔮 CLAUDE USAGE LIMIT PREDICTOR (Legacy)")
     else:
-        print("🔮 CLAUDE USAGE LIMIT PREDICTOR")
+        print("🔬 CLAUDE ADVANCED PROBABILISTIC PREDICTOR")
     
     files = find_project_files()
     if not files:
@@ -1163,6 +1165,16 @@ def main():
         # Run backtesting to validate prediction accuracy
         backtest_predictions(analysis_data['all_messages'], analysis_data['limit_hits'])
         print(f"\n✅ PREDICTION ANALYSIS COMPLETE!")
+        
+    elif args.command == 'advanced':
+        # Import the advanced prediction system
+        try:
+            from src.claude_cost.predictions import print_advanced_predictions
+            print_advanced_predictions(analysis_data, five_hour_patterns)
+            print(f"\n✅ ADVANCED PREDICTION ANALYSIS COMPLETE!")
+        except ImportError:
+            print("❌ Advanced prediction system not available in standalone mode")
+            print("   Use 'claude-cost advanced' instead for full functionality")
 
 if __name__ == "__main__":
     main()

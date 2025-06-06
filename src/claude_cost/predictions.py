@@ -2,6 +2,7 @@
 Prediction and backtesting functions for Claude Cost analysis.
 
 This module contains functions for usage limit predictions and algorithm validation.
+Includes both legacy and advanced prediction algorithms.
 """
 
 import statistics
@@ -9,6 +10,7 @@ from datetime import timedelta
 from typing import Dict, List
 
 from .models import ComprehensiveMetrics
+from .advanced_predictions import AdvancedPredictionEngine, SessionContext
 
 
 def print_predictions_only(metrics: ComprehensiveMetrics, analysis_data: Dict, five_hour_patterns=None, avg_5h_tokens_before_limit=0, avg_5h_messages_before_limit=0, avg_tokens_per_minute_before_limit=0, current_3h_tokens=0, current_3h_count=0, current_tokens_per_minute=0, current_messages_per_minute=0):
@@ -76,6 +78,123 @@ def print_predictions_only(metrics: ComprehensiveMetrics, analysis_data: Dict, f
             messages_to_limit = metrics.tokens_to_next_limit / (current_3h_tokens / current_3h_count) if current_3h_tokens > 0 else 0
             print(f"   • Messages to Usage Limit: {messages_to_limit:.0f} messages")
     print(f"   • Risk Score: {metrics.current_session_risk_score:.1f}%")
+
+
+def print_advanced_predictions(analysis_data: Dict, five_hour_patterns=None):
+    """Print advanced probabilistic predictions with uncertainty quantification"""
+    
+    print(f"\n🔮 ADVANCED PROBABILISTIC PREDICTION ANALYSIS")
+    print("=" * 60)
+    
+    timezone_str = analysis_data['timezone']
+    print(f"\n🌍 TIMEZONE: {timezone_str}")
+    print(f"   (All times shown in this timezone)")
+    
+    # Initialize advanced prediction engine
+    engine = AdvancedPredictionEngine()
+    
+    # Get recent messages (last 3 hours)
+    recent_messages = []
+    all_messages = analysis_data.get('all_messages', [])
+    
+    if all_messages:
+        from datetime import datetime, timezone as tz
+        now = datetime.now(tz.utc)
+        three_hours_ago = now - timedelta(hours=3)
+        
+        recent_messages = [
+            msg for msg in all_messages 
+            if msg['timestamp'] and msg['timestamp'] >= three_hours_ago
+        ]
+    
+    # Generate multi-horizon predictions
+    horizons = [15, 30, 60, 120]  # 15min, 30min, 1hr, 2hr
+    predictions = engine.generate_predictions(recent_messages, five_hour_patterns or [], horizons)
+    
+    print(f"\n🎯 MULTI-HORIZON PREDICTIONS")
+    print(f"   Recent Activity: {len(recent_messages)} messages in last 3 hours")
+    
+    if recent_messages:
+        # Show session context classification
+        features = engine.feature_extractor.extract_features(recent_messages)
+        context = engine.context_classifier.classify(features, recent_messages)
+        
+        context_descriptions = {
+            SessionContext.EXPLORATION: "High variance, unpredictable patterns",
+            SessionContext.CODING: "Steady rate, predictable workflow", 
+            SessionContext.DEBUGGING: "Irregular bursts, high intensity",
+            SessionContext.OPTIMIZATION: "Declining rate, refinement focus",
+            SessionContext.UNKNOWN: "Insufficient data for classification"
+        }
+        
+        print(f"   Session Context: {context.value.title()} - {context_descriptions[context]}")
+        print(f"   Current Rate: {features.tokens_per_minute:.0f} tokens/min")
+        print(f"   Rate Variance: {features.token_rate_variance:.2f}")
+        print(f"   Rate Acceleration: {features.rate_acceleration:+.1f}")
+        
+        print(f"\n📊 PREDICTION RESULTS:")
+        
+        for horizon in horizons:
+            pred = predictions[horizon]
+            
+            # Format horizon display
+            if horizon < 60:
+                horizon_str = f"{horizon}min"
+            else:
+                horizon_str = f"{horizon//60}hr"
+            
+            print(f"\n   {horizon_str} Horizon:")
+            print(f"   • Mean Time to Limit: {pred.mean_minutes:.0f} minutes")
+            print(f"   • Confidence Interval: {pred.confidence_interval[0]:.0f} - {pred.confidence_interval[1]:.0f} minutes")
+            print(f"   • Probability within {horizon_str}: {pred.probability_within_hour:.1%}")
+            print(f"   • Risk Score: {pred.risk_score:.1f}/100")
+            
+            # Risk interpretation
+            if pred.risk_score > 80:
+                risk_level = "🔴 CRITICAL"
+            elif pred.risk_score > 60:
+                risk_level = "🟠 HIGH"
+            elif pred.risk_score > 40:
+                risk_level = "🟡 MEDIUM"
+            else:
+                risk_level = "🟢 LOW"
+            
+            print(f"   • Risk Level: {risk_level}")
+        
+        # Show actionable insights
+        print(f"\n💡 ACTIONABLE INSIGHTS:")
+        
+        primary_pred = predictions[60]  # Use 1-hour prediction as primary
+        
+        if primary_pred.risk_score > 70:
+            print(f"   • ⚠️ High risk detected - consider wrapping up current tasks")
+            print(f"   • 📉 Expected time to limit: {primary_pred.mean_minutes:.0f} ± {(primary_pred.confidence_interval[1] - primary_pred.confidence_interval[0])/2:.0f} minutes")
+        elif primary_pred.risk_score > 40:
+            print(f"   • ⚡ Moderate risk - monitor usage rate")
+            print(f"   • 📊 Current session trending {context.value}")
+        else:
+            print(f"   • ✅ Low risk - continue normal usage")
+            print(f"   • 🎯 Session pattern: {context.value}")
+        
+        # Context-specific recommendations
+        if context == SessionContext.DEBUGGING:
+            print(f"   • 🐛 Debugging session detected - expect burst patterns")
+        elif context == SessionContext.EXPLORATION:
+            print(f"   • 🔍 Exploration session - high variance expected")
+        elif context == SessionContext.CODING:
+            print(f"   • ⌨️ Coding session - predictable rate patterns")
+        elif context == SessionContext.OPTIMIZATION:
+            print(f"   • 🔧 Optimization session - rate likely to decline")
+    
+    else:
+        print(f"   • No recent activity detected")
+        print(f"   • Predictions unavailable without current session data")
+    
+    print(f"\n🧮 ALGORITHM DETAILS:")
+    print(f"   • Model Type: Probabilistic ensemble with context classification")
+    print(f"   • Uncertainty Method: Log-normal distribution with confidence intervals")
+    print(f"   • Context Classification: Behavioral pattern analysis")
+    print(f"   • Features Used: {12} behavioral and temporal features")
 
 
 def backtest_predictions(all_messages, limit_hits):

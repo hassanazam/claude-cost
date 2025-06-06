@@ -9,7 +9,7 @@ import sys
 
 from .core import find_project_files, calculate_comprehensive_metrics
 from .metrics import print_metrics_only
-from .predictions import print_predictions_only, backtest_predictions
+from .predictions import print_predictions_only, print_advanced_predictions, backtest_predictions
 
 
 def main():
@@ -20,20 +20,23 @@ def main():
         epilog="""
 Examples:
   claude-cost metrics         # Essential optimization metrics
-  claude-cost predict         # Usage limit predictions with backtesting
+  claude-cost predict         # Legacy usage limit predictions with backtesting
+  claude-cost advanced        # Advanced probabilistic predictions with context awareness
         """
     )
     
     parser.add_argument('command', nargs='?', default='metrics',
-                       choices=['metrics', 'predict'],
+                       choices=['metrics', 'predict', 'advanced'],
                        help='What to analyze (default: metrics)')
     
     args = parser.parse_args()
     
     if args.command == 'metrics':
         print("📊 CLAUDE COMPREHENSIVE METRICS CALCULATOR")
+    elif args.command == 'predict':
+        print("🔮 CLAUDE USAGE LIMIT PREDICTOR (Legacy)")
     else:
-        print("🔮 CLAUDE USAGE LIMIT PREDICTOR")
+        print("🔬 CLAUDE ADVANCED PROBABILISTIC PREDICTOR")
     
     # Find and analyze files
     files = find_project_files()
@@ -76,6 +79,11 @@ Examples:
         # Run backtesting to validate prediction accuracy
         backtest_predictions(analysis_data['all_messages'], analysis_data['limit_hits'])
         print(f"\n✅ PREDICTION ANALYSIS COMPLETE!")
+        
+    elif args.command == 'advanced':
+        # Show advanced probabilistic predictions
+        print_advanced_predictions(analysis_data, five_hour_patterns)
+        print(f"\n✅ ADVANCED PREDICTION ANALYSIS COMPLETE!")
 
 
 if __name__ == "__main__":

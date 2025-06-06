@@ -16,12 +16,13 @@ def main():
         epilog="""
 Examples:
   claude-cost metrics         # Essential optimization metrics
-  claude-cost predict         # Usage limit predictions with backtesting
+  claude-cost predict         # Legacy usage limit predictions with backtesting
+  claude-cost advanced        # Advanced probabilistic predictions with context awareness
         """
     )
     
     parser.add_argument('command', nargs='?', default='metrics',
-                       choices=['metrics', 'predict'],
+                       choices=['metrics', 'predict', 'advanced'],
                        help='What to analyze (default: metrics)')
     
     args = parser.parse_args()
@@ -41,6 +42,14 @@ Examples:
             sys.exit(result.returncode)
         except Exception as e:
             print(f"❌ Error generating predictions: {e}")
+            sys.exit(1)
+    
+    elif args.command == 'advanced':
+        try:
+            result = subprocess.run([sys.executable, 'claude_comprehensive_metrics.py', 'advanced'], cwd=os.path.dirname(os.path.abspath(__file__)))
+            sys.exit(result.returncode)
+        except Exception as e:
+            print(f"❌ Error generating advanced predictions: {e}")
             sys.exit(1)
 
 if __name__ == '__main__':

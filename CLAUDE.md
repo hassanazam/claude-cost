@@ -34,8 +34,11 @@ pip3 install -r requirements.txt
 # Cost optimization and efficiency analysis
 ./claude-cost metrics
 
-# Usage limit predictions with backtesting
+# Legacy usage limit predictions with backtesting
 ./claude-cost predict
+
+# Advanced probabilistic predictions with context awareness (NEW!)
+./claude-cost advanced
 ```
 
 ### Direct Usage
@@ -43,8 +46,11 @@ pip3 install -r requirements.txt
 # Run metrics analysis directly
 python3 claude_comprehensive_metrics.py metrics
 
-# Run prediction analysis directly  
+# Run legacy prediction analysis directly  
 python3 claude_comprehensive_metrics.py predict
+
+# Run advanced probabilistic predictions directly
+python3 claude_comprehensive_metrics.py advanced
 ```
 
 ## Data Processing Logic
@@ -116,23 +122,37 @@ All analysis functions work without any external packages.
 - **Session Patterns** - Usage intensity, productivity hours, frequency analysis
 - **Last 5 Hours** - Recent activity vs overall averages
 
-### 🔮 Prediction Analysis (`./claude-cost predict`)
+### 🔮 Legacy Prediction Analysis (`./claude-cost predict`)
 - **Real-time Predictions** - Minutes/tokens/messages remaining to usage limit
 - **3-Hour Rate Analysis** - Current usage rate from ALL jsonl files
 - **5-Hour Pre-limit Patterns** - Historical analysis of usage before limits
 - **Risk Assessment** - Current activity vs historical danger patterns
 - **Backtesting Validation** - Algorithm accuracy: 66.7% (moderate, excellent for high-activity)
 
-**Prediction Algorithm:**
+**Legacy Algorithm:**
 - Analyzes last 3 hours across all projects
 - Compares to historical 5-hour patterns before limits
 - Predicts time to danger zone based on current rate
 - Shows actual values: "45 minutes, 9M tokens, 130 messages to limit"
 
-### 🧪 Backtesting Results
-- **High-activity scenarios**: Perfect accuracy (0 minutes error)
-- **Low-activity scenarios**: Poor accuracy (100-144% error) 
-- **Current confidence**: High for users with 1.3x+ intensity (your typical usage)
+### 🔬 Advanced Probabilistic Predictions (`./claude-cost advanced`) **NEW!**
+- **Context Classification** - Automatically detects session type (exploration, coding, debugging, optimization)
+- **Multi-Horizon Predictions** - 15min, 30min, 1hr, 2hr forecasts with confidence intervals
+- **Uncertainty Quantification** - Statistical confidence bounds using log-normal distributions
+- **Behavioral Feature Analysis** - 12+ features including rate variance, acceleration, complexity trends
+- **Dynamic Risk Scoring** - Context-aware risk assessment (0-100 scale)
+- **Actionable Insights** - Session-specific recommendations and warnings
+
+**Advanced Algorithm Features:**
+- **Probabilistic Modeling**: Uses Bayesian inference with uncertainty quantification
+- **Context Awareness**: Adapts predictions based on session type (exploration vs coding vs debugging)
+- **Feature Engineering**: Extracts behavioral patterns, trends, and volatility metrics
+- **Multi-Model Ensemble**: Different prediction models for different usage contexts
+- **Statistical Rigor**: Confidence intervals, probability distributions, cross-validation
+
+### 🧪 Algorithm Comparison
+- **Legacy**: Deterministic rate-based extrapolation (66.7% accuracy)
+- **Advanced**: Probabilistic context-aware ensemble (designed for higher accuracy with uncertainty bounds)
 
 ## Troubleshooting
 
@@ -153,7 +173,9 @@ python3 --version  # Requires 3.7+
 ```bash
 # These commands are verified to work:
 ./claude-cost metrics               # Cost optimization analysis
-./claude-cost predict              # Usage limit predictions
+./claude-cost predict              # Legacy usage limit predictions  
+./claude-cost advanced             # Advanced probabilistic predictions (NEW!)
 python3 claude_comprehensive_metrics.py metrics   # Direct metrics
-python3 claude_comprehensive_metrics.py predict   # Direct predictions
+python3 claude_comprehensive_metrics.py predict   # Direct legacy predictions
+python3 claude_comprehensive_metrics.py advanced  # Direct advanced predictions
 ```
