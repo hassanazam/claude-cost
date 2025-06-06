@@ -8,6 +8,9 @@ jobs:
   test-pr:
     runs-on: ubuntu-latest
     
+    env:
+      PYTHONIOENCODING: utf-8
+    
     steps:
     - uses: actions/checkout@v4
     

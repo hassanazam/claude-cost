@@ -6,14 +6,32 @@ This module provides the main CLI entry point for the claude-cost package.
 
 import argparse
 import sys
+import os
 
 from .core import find_project_files, calculate_comprehensive_metrics
 from .metrics import print_metrics_only
 from .predictions import print_predictions_only, print_advanced_predictions, backtest_predictions
 
 
+def safe_print(text):
+    """Print text with proper Unicode handling for cross-platform compatibility."""
+    try:
+        print(text, flush=True)
+    except UnicodeEncodeError:
+        # Fallback for systems that can't handle Unicode
+        fallback_text = text.encode('ascii', 'replace').decode('ascii')
+        print(fallback_text, flush=True)
+
+
 def main():
     """Main CLI entry point."""
+    # Set UTF-8 encoding for stdout if possible
+    if hasattr(sys.stdout, 'reconfigure'):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except:
+            pass
+    
     parser = argparse.ArgumentParser(
         description='Claude Cost - Comprehensive Claude usage analysis and optimization',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -32,22 +50,22 @@ Examples:
     args = parser.parse_args()
     
     if args.command == 'metrics':
-        print("📊 CLAUDE COMPREHENSIVE METRICS CALCULATOR")
-        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
+        safe_print("📊 CLAUDE COMPREHENSIVE METRICS CALCULATOR")
+        safe_print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     elif args.command == 'predict':
-        print("🔮 CLAUDE USAGE LIMIT PREDICTOR (Legacy)")
-        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
+        safe_print("🔮 CLAUDE USAGE LIMIT PREDICTOR (Legacy)")
+        safe_print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     else:
-        print("🔬 CLAUDE ADVANCED PROBABILISTIC PREDICTOR")
-        print("🔒 Privacy-first design: Only processes usage metadata, never message content")
+        safe_print("🔬 CLAUDE ADVANCED PROBABILISTIC PREDICTOR")
+        safe_print("🔒 Privacy-first design: Only processes usage metadata, never message content")
     
     # Find and analyze files
     files = find_project_files()
     if not files:
-        print("❌ No Claude project files found")
+        safe_print("❌ No Claude project files found")
         sys.exit(1)
     
-    print(f"📁 Analyzing {len(files)} files...")
+    safe_print(f"📁 Analyzing {len(files)} files...")
     
     # Calculate metrics
     result = calculate_comprehensive_metrics(files)
@@ -69,7 +87,7 @@ Examples:
             avg_tokens_per_minute_before_limit, current_3h_tokens, 
             current_3h_count, current_tokens_per_minute, current_messages_per_minute
         )
-        print(f"\n✅ COMPREHENSIVE METRICS ANALYSIS COMPLETE!")
+        safe_print(f"\n✅ COMPREHENSIVE METRICS ANALYSIS COMPLETE!")
         
     elif args.command == 'predict':
         print_predictions_only(
@@ -81,12 +99,12 @@ Examples:
         
         # Run backtesting to validate prediction accuracy
         backtest_predictions(analysis_data['all_messages'], analysis_data['limit_hits'])
-        print(f"\n✅ PREDICTION ANALYSIS COMPLETE!")
+        safe_print(f"\n✅ PREDICTION ANALYSIS COMPLETE!")
         
     elif args.command == 'advanced':
         # Show advanced probabilistic predictions
         print_advanced_predictions(analysis_data, five_hour_patterns)
-        print(f"\n✅ ADVANCED PREDICTION ANALYSIS COMPLETE!")
+        safe_print(f"\n✅ ADVANCED PREDICTION ANALYSIS COMPLETE!")
 
 
 if __name__ == "__main__":
