@@ -190,3 +190,24 @@ test_charts/
 temp/
 logs/
 *.jsonl.backup
+
+# Claude Code settings (SECURITY: Contains development permissions)
+.claude/
+
+# Build artifacts (SECURITY: Should not be in version control)
+dist/
+build/
+*.whl
+*.tar.gz
+
+# Additional security exclusions
+*.key
+*.pem
+*.p12
+*.pfx
+.env*
+*secret*
+*password*
+*token*
+config.json
+settings.json

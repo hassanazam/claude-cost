@@ -23,7 +23,7 @@ echo "❌ Don't initialize with README (we have one)"
 
 echo ""
 echo "3️⃣ Connect and Push:"
-echo "git remote add origin https://github.com/hassanazam/claude-cost.git"
+echo "git remote add origin https://github.com/[USERNAME]/claude-cost.git"
 echo "git push -u origin main"
 
 echo ""
@@ -38,7 +38,7 @@ echo ""
 echo "5️⃣ Publish to PyPI:"
 echo "git tag v1.0.0"
 echo "git push origin v1.0.0"
-echo "🌐 Create release: https://github.com/hassanazam/claude-cost/releases/new"
+echo "🌐 Create release: https://github.com/[USERNAME]/claude-cost/releases/new"
 
 echo ""
 echo "🎉 After publishing, users can install with:"

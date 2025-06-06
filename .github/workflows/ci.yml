@@ -74,6 +74,21 @@ jobs:
       run: |
         pip install twine
         twine check dist/*
+    
+    - name: Security scan with bandit
+      run: |
+        pip install bandit[toml]
+        bandit -r src/ -f json -o bandit-report.json || true
+        bandit -r src/ || true
+    
+    - name: Check for hardcoded secrets
+      run: |
+        echo "🔍 Scanning for potential secrets..."
+        ! grep -r -i "api.key\|password\|secret\|token" src/ --include="*.py" || {
+          echo "❌ Potential hardcoded secrets found"
+          exit 1
+        }
+        echo "✅ No hardcoded secrets detected"
 
   publish:
     needs: test
@@ -96,9 +111,15 @@ jobs:
     - name: Build package
       run: python -m build
     
+    - name: Sign packages with Sigstore
+      uses: sigstore/gh-action-sigstore-python@v2.1.1
+      with:
+        inputs: ./dist/*
+      continue-on-error: true  # Don't fail if signing unavailable
+    
     - name: Publish to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        twine upload dist/*
+        twine upload dist/* --verbose
