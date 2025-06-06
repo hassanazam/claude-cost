@@ -8,7 +8,7 @@ version = "1.0.0"
 authors = [
     {name = "Hassan", email = "noreply@claude-cost.dev"},
 ]
-description = "Command-line tool for AI usage analysis, cost optimization, and usage limit predictions"
+description = "Stop flying blind with AI costs - analyze spending, optimize usage, predict limits. Works with API and subscriptions."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.7"
